@@ -1,0 +1,16 @@
+{
+  "name": "tiktokapi",
+  "version": "1.0.0",
+  "description": "TikTok LIVE integration API for FiveM",
+  "main": "server/tiktok.js",
+  "scripts": {
+    "build": "esbuild server/tiktok.js --bundle --platform=node --target=node22 --outfile=server/dist/tiktok.js --external:@citizenfx/*",
+    "watch": "esbuild server/tiktok.js --bundle --platform=node --target=node22 --outfile=server/dist/tiktok.js --external:@citizenfx/* --watch"
+  },
+  "dependencies": {
+    "tiktok-live-connector": "^2.1.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

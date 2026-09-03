@@ -1,0 +1,321 @@
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Root ──────────────────────────────────────────────────────────────────── */
+.hud-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  user-select: none;
+}
+
+/* ── Shared panel chrome ───────────────────────────────────────────────────── */
+.panel {
+  background: rgba(4, 6, 12, 0.80);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  padding: 12px 14px;
+  backdrop-filter: blur(10px);
+}
+
+.panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.30);
+  margin-bottom: 10px;
+}
+
+/* ── Shared health bar ─────────────────────────────────────────────────────── */
+.bar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-track.small { height: 7px; }
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.35s ease, background 0.35s ease;
+}
+
+/* ── Leaderboard ───────────────────────────────────────────────────────────── */
+.leaderboard-panel {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 270px;
+}
+
+.leader-section {
+  margin-bottom: 2px;
+}
+
+.leader-section-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.22);
+  margin-bottom: 7px;
+}
+
+.leader-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 10px 0 11px;
+}
+
+.leader-empty {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.18);
+  padding: 2px 0 4px;
+}
+
+.leader-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.leader-rank {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.22);
+  width: 24px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.leader-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.leader-name {
+  font-size: 13px;
+  color: #e2e8f0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leader-kills {
+  font-size: 13px;
+  font-weight: 700;
+  color: #facc15;
+  flex-shrink: 0;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ── Crew health cards (right panel) ──────────────────────────────────────── */
+.crews-panel {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 280px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  scrollbar-width: none;
+}
+.crews-panel::-webkit-scrollbar { display: none; }
+
+.crews-title { padding: 0 2px 4px; }
+
+.crew-card {
+  background: rgba(4, 6, 12, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-left: 3px solid #fff;
+  border-radius: 7px;
+  padding: 10px 12px;
+  backdrop-filter: blur(8px);
+  animation: fadeSlideIn 0.2s ease;
+}
+
+.crew-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.crew-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.crew-owner {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e2e8f0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.crew-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.38);
+  flex-shrink: 0;
+}
+
+.crew-peds {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.crew-ped-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: opacity 0.3s;
+}
+
+.crew-ped-row.dead { opacity: 0.25; }
+
+.crew-tier {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.42);
+  width: 64px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Fodder card ───────────────────────────────────────────────────────────── */
+.fodder-card {
+  border-left-color: rgba(190, 190, 190, 0.35) !important;
+}
+
+/* ── Guard / attacker card ─────────────────────────────────────────────────── */
+.attacker-card {
+  border-left-color: rgba(220, 80, 80, 0.50) !important;
+}
+
+/* ── Elimination toasts ────────────────────────────────────────────────────── */
+.toasts-container {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.elim-toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border-radius: 7px;
+  background: rgba(4, 6, 12, 0.92);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  backdrop-filter: blur(10px);
+  animation: fadeInUp 0.25s ease, fadeOut 0.4s ease 4.6s forwards;
+  white-space: nowrap;
+}
+
+.toast-skull { font-size: 14px; color: #f87171; }
+
+.toast-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.toast-text strong { color: #e2e8f0; }
+
+/* ── Edit mode ─────────────────────────────────────────────────────────────── */
+.edit-panel {
+  outline: 2px dashed rgba(255, 215, 50, 0.65);
+  cursor: grab !important;
+  user-select: none;
+  pointer-events: all;   /* hud-root is pointer-events:none; panels need this in edit mode */
+}
+.edit-panel * { pointer-events: none; }  /* children don't absorb the drag */
+.edit-panel:active { cursor: grabbing !important; }
+
+.edit-handle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255, 215, 50, 0.75);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.edit-toolbar {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: all;
+  background: rgba(4, 6, 12, 0.92);
+  border: 1px solid rgba(255, 215, 50, 0.35);
+  border-radius: 8px;
+  padding: 10px 16px;
+  z-index: 10000;
+  backdrop-filter: blur(10px);
+}
+
+.edit-label {
+  font-size: 11px;
+  color: rgba(255, 215, 50, 0.75);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.edit-btn {
+  padding: 6px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  pointer-events: all;
+}
+
+.edit-btn.save   { background: rgba(74,222,128,0.18); color: #4ade80; border-color: rgba(74,222,128,0.4); }
+.edit-btn.cancel { background: rgba(248,113,113,0.14); color: #f87171; border-color: rgba(248,113,113,0.35); }
+.edit-btn:hover  { filter: brightness(1.25); }
+
+/* ── Animations ────────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}

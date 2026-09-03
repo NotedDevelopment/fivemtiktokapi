@@ -1,0 +1,384 @@
+/* ── Reset ──────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Root ────────────────────────────────────────────────────────────────────── */
+.hud-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  user-select: none;
+}
+
+/* ── Shared panel chrome ──────────────────────────────────────────────────────── */
+.panel {
+  background: rgba(5, 8, 14, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 14px 16px;
+  backdrop-filter: blur(8px);
+}
+
+.panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.def-count {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
+/* ── Shared bar ──────────────────────────────────────────────────────────────── */
+.bar-track {
+  flex: 1;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.bar-track.small { height: 7px; }
+
+.bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.35s ease, background 0.35s ease;
+}
+
+/* ── Defender Panel ──────────────────────────────────────────────────────────── */
+.defender-panel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 24px;
+  width: 320px;
+}
+
+.def-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  transition: opacity 0.3s;
+}
+
+.def-row.dead { opacity: 0.35; }
+
+.def-label {
+  font-size: 15px;
+  color: #e2e8f0;
+  width: 110px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.def-pct {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  width: 42px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Crews Panel ─────────────────────────────────────────────────────────────── */
+.crews-panel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 24px;
+  width: 320px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* hide scrollbar cosmetically */
+  scrollbar-width: none;
+}
+.crews-panel::-webkit-scrollbar { display: none; }
+
+.crews-title {
+  /* floats above the first card, not inside a panel itself */
+  padding: 0 2px 5px;
+}
+
+.crew-card {
+  background: rgba(5, 8, 14, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 4px solid #fff;   /* overridden inline */
+  border-radius: 8px;
+  padding: 12px 14px;
+  backdrop-filter: blur(8px);
+  animation: fadeSlideIn 0.2s ease;
+}
+
+.crew-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.crew-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.crew-owner {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e2e8f0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.crew-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+}
+
+.crew-peds {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.crew-ped-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.3s;
+}
+
+.crew-ped-row.dead { opacity: 0.28; }
+
+.crew-tier {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  width: 78px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Result Toasts ───────────────────────────────────────────────────────────── */
+.toasts-container {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 24px;
+  border-radius: 8px;
+  background: rgba(5, 8, 14, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  animation: fadeInUp 0.25s ease, fadeOut 0.4s ease 4.6s forwards;
+  white-space: nowrap;
+}
+
+.result-toast.victory { border-color: rgba(74, 222, 128, 0.35); }
+.result-toast.defeat  { border-color: rgba(248, 113, 113, 0.35); }
+
+.toast-icon {
+  font-size: 17px;
+}
+
+.victory .toast-icon { color: #4ade80; }
+.defeat  .toast-icon { color: #f87171; }
+
+.toast-owner {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.toast-detail {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Convoy Panel ────────────────────────────────────────────────────────────── */
+.convoy-panel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 24px;
+  width: 340px;
+}
+
+.convoy-mode-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.convoy-mode-badge.passive {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.convoy-mode-badge.aggro {
+  background: rgba(248, 113, 113, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  animation: aggroPulse 1.2s ease-in-out infinite;
+}
+
+.convoy-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.convoy-progress-fill {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+  transition: width 0.6s ease !important;
+}
+
+/* ── Convoy Vehicle Card ─────────────────────────────────────────────────────── */
+.convoy-veh-card {
+  background: rgba(5, 8, 14, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 4px solid #fff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  backdrop-filter: blur(8px);
+  animation: fadeSlideIn 0.2s ease;
+}
+
+.convoy-veh-card.dead { opacity: 0.32; }
+
+.convoy-veh-card.vip {
+  padding: 12px 14px;
+  border-width: 1px 1px 1px 5px;
+}
+
+.convoy-veh-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.convoy-veh-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e2e8f0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.convoy-veh-role-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 1px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.convoy-veh-role-badge.vip {
+  background: rgba(255, 215, 50, 0.18);
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 50, 0.3);
+}
+
+.convoy-veh-role-badge.escort {
+  background: rgba(80, 160, 255, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(80, 160, 255, 0.3);
+}
+
+.convoy-hp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.convoy-hp-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.38);
+  width: 32px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+/* ── Convoy attacker vehicle sub-row ─────────────────────────────────────────── */
+.convoy-atk-veh {
+  margin-bottom: 6px;
+  transition: opacity 0.3s;
+}
+
+.convoy-atk-veh.dead { opacity: 0.28; }
+
+/* ── Convoy Result Toast ─────────────────────────────────────────────────────── */
+.convoy-result {
+  min-width: 280px;
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────────── */
+@keyframes aggroPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
